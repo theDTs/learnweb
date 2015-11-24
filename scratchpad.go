@@ -25,34 +25,30 @@ func main() {
 
 }
 
+//Game describes a Game of Life "board", with a grid of cells that can be updated turn by turn
 type Game struct {
-	Board
+	state, prevState [][]Cell
+	rows, cols uint
+	
 }
 
-type Board struct {
-	 state, prevState [][]Cell
-	 Rows, Cols uint
-}
-
-func New(rows, cols uint) Board {
+func NewGame (rows, cols uint) Game {
+	var g Game
+	g.rows, g.cols = rows, cols
 	
-	var b Board
-	b.Rows, b.Cols = rows, cols
-	
-	b.state = make([][]Cell, rows+2) //+2 adds a border 1 Cell wide at the edge of the board for the purposes of counting
-	b.prevState = make([][]Cell, rows+2) //We'll get the state of each generation by looking at the previous generation
+	g.state = make([][]Cell, rows+2) //+2 adds a border 1 Cell wide at the edge of the board for the purposes of counting
+	g.prevState = make([][]Cell, rows+2) //We'll get the state of each generation by looking at the previous generation
 	
 	//Make a blank board
-	for y := 0; y < len(state); y++ {
-		state[y] = make([]Cell, cols+2)
-		prevState[y] = make([]Cell, cols+2)
+	for y := 0; y < len(g.state); y++ {
+		g.state[y] = make([]Cell, cols+2)
+		g.prevState[y] = make([]Cell, cols+2)
 	}
-	
-	return b
 }
 
 type Cell struct {
 	Alive bool 
-	Player int
+	Player uint
+	Type uint
 }
 
