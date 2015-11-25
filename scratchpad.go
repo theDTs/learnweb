@@ -46,9 +46,26 @@ func NewGame(rows, cols uint) *Game {
 	}
 }
 
-//RandSeed will change a bunch of cells in the middle of board to random on and off states.
+//RandSeed will change a bunch of cells in the middle of board to random on and off states. Requires the game to be initialized and of minimum size 4x4
 func (g *Game) RandSeed() {
-
+	//Find the center (approximate for odd height or width) Cell of the board
+	xMid := g.cols / 2
+	yMid := g.rows / 2
+	
+	//TEMP placeholder for actual random number generator
+	rand := []int {0,1,0,1,1,1,1,0,0,0,1,0,1,0,1,1,}
+	
+	//Iterate over a 4x4 square around the center Cell
+	i := 0
+	for y := yMid - 1; x < yMid + 3; y++ {
+		for x := xMid - 1; x < xMid +3; x++ {
+			if rand[i] == 1 {
+				g.state[y][x].Alive = !g.state.Alive
+			}
+			i++
+		}
+	}
+	return
 }
 
 //Cell holds the state of one cell
