@@ -58,10 +58,10 @@ func (g *Game) RandSeed() {
 	
 	//Iterate over a 4x4 square around the center Cell
 	i := 0
-	for y := yMid - 1; x < yMid + 3; y++ {
+	for y := yMid - 1; y < yMid + 3; y++ {
 		for x := xMid - 1; x < xMid +3; x++ {
 			if rand[i] == 1 {
-				g.state[y][x].Alive = !g.state.Alive
+				g.state[y][x].Alive = !g.state[y][x].Alive
 			}
 			i++
 		}
