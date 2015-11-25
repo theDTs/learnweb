@@ -44,10 +44,17 @@ func NewGame(rows, cols uint) *Game {
 		g.state[y] = make([]Cell, cols+2)
 		g.prevState[y] = make([]Cell, cols+2)
 	}
+	return g
 }
 
-//RandSeed will change a bunch of cells in the middle of board to random on and off states. Requires the game to be initialized and of minimum size 4x4
+//RandSeed will flip the Alive states of a 4x4 square of Cells in center of board. Will not affect a Game with smaller than 4x4 board size.
 func (g *Game) RandSeed() {
+	
+	//Do nothing if board is too small
+	if g.cols < 4 || g.rows < 4 {
+		return
+	}
+	
 	//Find the center (approximate for odd height or width) Cell of the board
 	xMid := g.cols / 2
 	yMid := g.rows / 2
@@ -57,10 +64,10 @@ func (g *Game) RandSeed() {
 	
 	//Iterate over a 4x4 square around the center Cell
 	i := 0
-	for y := yMid - 1; x < yMid + 3; y++ {
+	for y := yMid - 1; y < yMid + 3; y++ {
 		for x := xMid - 1; x < xMid +3; x++ {
 			if rand[i] == 1 {
-				g.state[y][x].Alive = !g.state.Alive
+				g.state[y][x].Alive = !g.state[y][x].Alive
 			}
 			i++
 		}
