@@ -32,7 +32,8 @@ type Game struct {
 	
 }
 
-func NewGame (rows, cols uint) Game {
+//NewGame returns a game with an empty board
+func NewGame (rows, cols uint) *Game {
 	var g Game
 	g.rows, g.cols = rows, cols
 	
@@ -46,6 +47,12 @@ func NewGame (rows, cols uint) Game {
 	}
 }
 
+//RandSeed will change a bunch of cells in the middle of board to random on and off states.
+func (g *Game) RandSeed() {
+
+}
+
+//Cell holds the state of one cell
 type Cell struct {
 	Alive bool 
 	Player uint
