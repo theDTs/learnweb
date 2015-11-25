@@ -28,18 +28,17 @@ func main() {
 //Game describes a Game of Life "board", with a grid of cells that can be updated turn by turn
 type Game struct {
 	state, prevState [][]Cell
-	rows, cols uint
-	
+	rows, cols       uint
 }
 
 //NewGame returns a game with an empty board
-func NewGame (rows, cols uint) *Game {
+func NewGame(rows, cols uint) *Game {
 	var g Game
 	g.rows, g.cols = rows, cols
-	
-	g.state = make([][]Cell, rows+2) //+2 adds a border 1 Cell wide at the edge of the board for the purposes of counting
+
+	g.state = make([][]Cell, rows+2)     //+2 adds a border 1 Cell wide at the edge of the board for the purposes of counting
 	g.prevState = make([][]Cell, rows+2) //We'll get the state of each generation by looking at the previous generation
-	
+
 	//Make a blank board
 	for y := 0; y < len(g.state); y++ {
 		g.state[y] = make([]Cell, cols+2)
@@ -54,8 +53,7 @@ func (g *Game) RandSeed() {
 
 //Cell holds the state of one cell
 type Cell struct {
-	Alive bool 
+	Alive  bool
 	Player uint
-	Type uint
+	Type   uint
 }
-
