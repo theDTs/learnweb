@@ -44,6 +44,7 @@ func NewGame(rows, cols uint) *Game {
 		g.state[y] = make([]Cell, cols+2)
 		g.prevState[y] = make([]Cell, cols+2)
 	}
+	return &g
 }
 
 //RandSeed will change a bunch of cells in the middle of board to random on and off states. Requires the game to be initialized and of minimum size 4x4
