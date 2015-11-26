@@ -70,6 +70,7 @@ func (g *Game) RandSeed() {
 	return
 }
 
+//Board returns a grid of the Game's current state for copying or  displaying
 func (*g Game) Board() [][]Cell {
 	
 	//Initialize blank board of Cells
