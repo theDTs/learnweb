@@ -39,7 +39,7 @@ func NewGame(rows, cols uint) *Game {
 	g.state = make([][]Cell, rows+2)     //+2 adds a border 1 Cell wide at the edge of the board for the purposes of counting
 	g.prevState = make([][]Cell, rows+2) //We'll get the state of each generation by looking at the previous generation
 
-	//Make a blank board
+	//Make a blank board with a border 1 Cell wide
 	for y := 0; y < len(g.state); y++ {
 		g.state[y] = make([]Cell, cols+2)
 		g.prevState[y] = make([]Cell, cols+2)
@@ -47,8 +47,9 @@ func NewGame(rows, cols uint) *Game {
 	return &g
 }
 
-//RandSeed will change a bunch of cells in the middle of board to random on and off states. Requires the game to be initialized and of minimum size 4x4
+//RandSeed will change a bunch of cells in the middle of board to random on and off states. Requires the game to be initialized and of minimum size 4x4@
 func (g *Game) RandSeed() {
+	
 	//Find the center (approximate for odd height or width) Cell of the board
 	xMid := g.cols / 2
 	yMid := g.rows / 2
@@ -67,6 +68,24 @@ func (g *Game) RandSeed() {
 		}
 	}
 	return
+}
+
+func (*g Game) Board() [][]Cell {
+	
+	//Initialize blank board of Cells
+	var b make([][]Cell, g.rows)
+	for y := 0; y < g.rows; y++ {
+		b[y] = make([]Cell, g.cols)
+	}
+	
+	//Copy state without the border
+	for y := 0; y < g.rows; y++ {
+		x :=0; x < g.cols; x++ {
+			b[y][x] = g.state[y+1][x+1] 
+		}
+	}
+	
+	return b
 }
 
 //Cell holds the state of one cell
