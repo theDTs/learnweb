@@ -27,7 +27,7 @@ func main() {
 
 //Game describes a Game of Life "board", with a grid of cells that can be updated turn by turn
 type Game struct {
-	state, prevState [][]Cell
+	state, prevState, board [][]Cell
 	rows, cols       uint
 }
 
@@ -36,16 +36,23 @@ func NewGame(rows, cols uint) *Game {
 	var g Game
 	g.rows, g.cols = rows, cols
 
-	g.state = make([][]Cell, rows+2)     //+2 adds a border 1 Cell wide at the edge of the board for the purposes of counting
-	g.prevState = make([][]Cell, rows+2) //We'll get the state of each generation by looking at the previous generation
-
-	//Make a blank board with a border 1 Cell wide
-	for y := 0; y < len(g.state); y++ {
-		g.state[y] = make([]Cell, cols+2)
-		g.prevState[y] = make([]Cell, cols+2)
-	}
+	g.state = makeBoard (rows+2, cols+2)     //+2 adds a border 1 Cell wide at each edge of the board, for the purposes of counting around the edge cells
+	g.prevState = makeBoard(rows+2, cols+2) //We'll get the state of each generation by looking at the previous generation
+	g.board = makeBoard(rows, cols)
+	
 	return &g
 }
+
+func makeBoard (rows, cols uint) [][]Cell {
+	b := make([][]Cell, rows)
+	
+	for y := 0; y < rows; y++ {
+		b[y] := make ([]Cell, cols)
+	}
+	
+	return b
+}
+
 
 //RandSeed will change a bunch of cells in the middle of board to random on and off states. Requires the game to be initialized and of minimum size 4x4@
 func (g *Game) RandSeed() {
@@ -70,7 +77,7 @@ func (g *Game) RandSeed() {
 	return
 }
 
-//Board returns a grid of the Game's current state for copying or  displaying
+//Board returns a grid of the Game's current board for copying or displaying; the grid can also be updated by providing it to Game.Update() (avoiding excessive allocations)
 func (*g Game) Board() [][]Cell {
 	
 	//Initialize blank board of Cells
