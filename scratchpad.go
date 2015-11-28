@@ -81,19 +81,28 @@ func (g *Game) RandSeed() {
 func (*g Game) Board() [][]Cell {
 	
 	//Initialize blank board of Cells
-	var b make([][]Cell, g.rows)
-	for y := 0; y < g.rows; y++ {
-		b[y] = make([]Cell, g.cols)
-	}
+	b := makeBoard(g.rows, g.cols)
 	
-	//Copy state without the border
+	//Copy board
 	for y := 0; y < g.rows; y++ {
 		x :=0; x < g.cols; x++ {
-			b[y][x] = g.state[y+1][x+1] 
+			b[y][x] = g.board[y][x] 
 		}
 	}
 	
 	return b
+}
+
+func (*g Game) Update(b [][]Cell) {
+	
+	//Copy board
+	for y := 0; y < g.rows; y++ {
+		x :=0; x < g.cols; x++ {
+			b[y][x] = g.board[y][x] 
+		}
+	}
+	return
+	
 }
 
 //Cell holds the state of one cell
