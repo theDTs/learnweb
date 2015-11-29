@@ -28,10 +28,10 @@ func main() {
 //Game describes a Game of Life "board", with a grid of cells that can be updated turn by turn
 type Game struct {
 	state, prevState, board [][]Cell
-	rows, cols       uint
+	rows, cols              uint
 }
 
-//Board represents a grid of cellular automata. Note that coordinates are reversed (y, x) when indexing to match the order "rows, columns"
+//Board represents a grid of cellular automata. Note that coordinates are reversed when indexing (y, x) to match the order "rows, columns"
 type Board [][]Cell
 
 //Cell holds the state of one cell
@@ -46,43 +46,42 @@ func NewGame(rows, cols uint) *Game {
 	var g Game
 	g.rows, g.cols = rows, cols
 
-	g.state = makeBoard (rows+2, cols+2)     //+2 adds a border 1 Cell wide at each edge of the board, for the purposes of counting around the edge cells
+	g.state = makeBoard(rows+2, cols+2)     //+2 adds a border 1 Cell wide at each edge of the board, for the purposes of counting around the edge cells
 	g.prevState = makeBoard(rows+2, cols+2) //We'll get the state of each generation by looking at the previous generation
 	g.board = makeBoard(rows, cols)
-	
+
 	return &g
 }
 
-func makeBoard (rows, cols uint) [][]Cell {
-	
-	//Create anonymous backing Array for b 
+func makeBoard(rows, cols uint) [][]Cell {
+
+	//Create anonymous backing Array for b
 	back := make([]Cell, rows*cols)
-	
+
 	b := make([][]Cell, rows)
-	
-	for y := 0; y < rows; y++ {
+
+	for y := 0; y < int(rows); y++ {
 		//Map each row onto a subslice of the backing Array the length of cols
-		b[y] := back [y*cols:(y+1)*cols]
+		b[y] = back[y*int(cols) : (y+1)*int(cols)]
 	}
-	
+
 	return b
 }
 
-
 //RandSeed will change a bunch of cells in the middle of board to random on and off states. Requires the game to be initialized and of minimum size 4x4@
 func (g *Game) RandSeed() {
-	
+
 	//Find the center (approximate for odd height or width) Cell of the board
 	xMid := g.cols / 2
 	yMid := g.rows / 2
-	
+
 	//TEMP placeholder for actual random number generator
-	rand := []int {0,1,0,1,1,1,1,0,0,0,1,0,1,0,1,1,}
-	
+	rand := []int{0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1}
+
 	//Iterate over a 4x4 square around the center Cell
 	i := 0
-	for y := yMid - 1; y < yMid + 3; y++ {
-		for x := xMid - 1; x < xMid +3; x++ {
+	for y := yMid - 1; y < yMid+3; y++ {
+		for x := xMid - 1; x < xMid+3; x++ {
 			if rand[i] == 1 {
 				g.state[y][x].Alive = !g.state[y][x].Alive
 			}
@@ -93,29 +92,29 @@ func (g *Game) RandSeed() {
 }
 
 //Board returns a grid of the Game's current board for copying or displaying; the grid can also be updated by providing it to Game.Update() (avoiding excessive allocations)
-func (*g Game) Board() [][]Cell {
-	
+func (g *Game) Board() [][]Cell {
+
 	//Initialize blank board of Cells
 	b := makeBoard(g.rows, g.cols)
-	
+
 	//Copy board
-	for y := 0; y < g.rows; y++ {
-		x :=0; x < g.cols; x++ {
-			b[y][x] = g.board[y][x] 
+	for y := 0; y < int(g.rows); y++ {
+		for x := 0; x < int(g.cols); x++ {
+			b[y][x] = g.board[y][x]
 		}
 	}
-	
+
 	return b
 }
 
-func (*g Game) Update(b [][]Cell) {
-	
+func (g *Game) Update(b [][]Cell) {
+
 	//Copy board
-	for y := 0; y < g.rows; y++ {
-		x :=0; x < g.cols; x++ {
-			b[y][x] = g.board[y][x] 
+	for y := 0; y < int(g.rows); y++ {
+		for x := 0; x < int(g.cols); x++ {
+			b[y][x] = g.board[y][x]
 		}
 	}
 	return
-	
+
 }
