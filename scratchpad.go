@@ -44,10 +44,15 @@ func NewGame(rows, cols uint) *Game {
 }
 
 func makeBoard (rows, cols uint) [][]Cell {
+	
+	//Create anonymous backing Array for b 
+	back := make([]Cell, rows*cols)
+	
 	b := make([][]Cell, rows)
 	
 	for y := 0; y < rows; y++ {
-		b[y] := make ([]Cell, cols)
+		//Map each row onto a subslice of the backing Array the length of cols
+		b[y] := back [y*cols:(y+1)*cols]
 	}
 	
 	return b
