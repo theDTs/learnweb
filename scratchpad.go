@@ -27,7 +27,7 @@ func main() {
 
 //Game describes a Game of Life "board", with a grid of cells that can be updated turn by turn
 type Game struct {
-	state, prevState, board [][]Cell
+	state, prevState, board Board
 	rows, cols              uint
 }
 
@@ -53,12 +53,12 @@ func NewGame(rows, cols uint) *Game {
 	return &g
 }
 
-func makeBoard(rows, cols uint) [][]Cell {
+func makeBoard(rows, cols uint) Board {
 
 	//Create anonymous backing Array for b
 	back := make([]Cell, rows*cols)
 
-	b := make([][]Cell, rows)
+	b := make(Board, rows)
 
 	for y := 0; y < int(rows); y++ {
 		//Map each row onto a subslice of the backing Array the length of cols
@@ -92,7 +92,7 @@ func (g *Game) RandSeed() {
 }
 
 //Board returns a grid of the Game's current board for copying or displaying; the grid can also be updated by providing it to Game.Update() (avoiding excessive allocations)
-func (g *Game) Board() [][]Cell {
+func (g *Game) GetBoard() Board {
 
 	//Initialize blank board of Cells
 	b := makeBoard(g.rows, g.cols)
@@ -107,7 +107,7 @@ func (g *Game) Board() [][]Cell {
 	return b
 }
 
-func (g *Game) Update(b [][]Cell) {
+func (g *Game) Update(b Board) {
 
 	//Copy board
 	for y := 0; y < int(g.rows); y++ {
