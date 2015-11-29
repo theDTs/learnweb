@@ -31,6 +31,16 @@ type Game struct {
 	rows, cols       uint
 }
 
+//Board represents a grid of cellular automata. Note that coordinates are reversed (y, x) when indexing to match the order "rows, columns"
+type Board [][]Cell
+
+//Cell holds the state of one cell
+type Cell struct {
+	Alive  bool
+	Player uint
+	Type   uint
+}
+
 //NewGame returns a game with an empty board
 func NewGame(rows, cols uint) *Game {
 	var g Game
@@ -108,11 +118,4 @@ func (*g Game) Update(b [][]Cell) {
 	}
 	return
 	
-}
-
-//Cell holds the state of one cell
-type Cell struct {
-	Alive  bool
-	Player uint
-	Type   uint
 }
