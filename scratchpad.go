@@ -76,8 +76,8 @@ func makeBoard(rows, cols uint) Board {
   return b
 }
 
-//RandSeed will change a bunch of cells in the middle of board to random on and off states. Requires the game to be initialized and of minimum size 4x4@
-func (g *Game) RandSeed() {
+//SeedRand will change a bunch of cells in the middle of the game board to random on and off states. Requires the game to be initialized and of minimum size 4x4
+func (g *Game) SeedRand() {
 
   //Find the center (approximate for odd height or width) Cell of the board
   xMid := g.cols / 2
@@ -98,6 +98,16 @@ func (g *Game) RandSeed() {
   }
 
   return
+}
+
+//SeedAcorn will clear the game board and place the "acorn", a long-lived "methuselah" pattern, in the center. Requires an initialized game with a board of at least 3 x 7
+func (g *Game) SeedAcorn() {
+	//Acorn pattern with rows end-to-end
+	acorn := []int	{	0,1,0,0,0,0,0,
+						0,0,0,1,0,0,0,
+						1,1,0,0,1,1,1,
+					}
+	
 }
 
 //GetBoard returns a grid of the Game's current board for copying or displaying; the grid can also be updated by providing it to Game.Update() (avoiding excessive allocations)
