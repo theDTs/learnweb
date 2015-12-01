@@ -4,8 +4,6 @@ import (
   "github.com/gopherjs/gopherjs/js"
 )
 
-const cellSize = 10
-
 func main() {
   doc := js.Global.Get("document")
   //Clear the page
