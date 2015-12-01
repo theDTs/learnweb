@@ -97,6 +97,8 @@ func (g *Game) SeedRand() {
     }
   }
 
+  g.Update(g.board)
+  
   return
 }
 
