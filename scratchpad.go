@@ -9,9 +9,17 @@ func main() {
   //Clear the page
   doc.Get("body").Set("innerHTML", "")
   doc.Set("title", "Canvas Tests")
-  
+
   var d display
-  
+
+  d.rows, d.cols = 50, 50
+  d.cellSize = 10
+  d.height = d.rows * d.cellSize
+  d.width = d.cols * d.cellSize
+
+  d.Game = NewGame(rows, cols)
+  d.Board = d.Game.GetBoard()
+
   d.canvas = doc.Call("createElement", "canvas")
   d.canvas.Set("height", "500")
   d.canvas.Set("width", "500")
@@ -29,11 +37,9 @@ type display struct {
   rows, cols, height, width, cellSize int
   Board
   Game
-  canvas  *js.Object
-  ctx *js.Object
+  canvas *js.Object
+  ctx    *js.Object
 }
-
-
 
 //Game describes a Game of Life "board", with a grid of cells that can be updated turn by turn
 type Game struct {
@@ -99,7 +105,7 @@ func (g *Game) SeedRand() {
     }
   }
 
-  //Update the copy 
+  //Update the copy
   for y := 0; y < rows; y++ {
     for x := 0; x < cols; x++ {
       g.board[y][x] = g.state[y][x]
@@ -140,8 +146,8 @@ func (g *Game) SeedAcorn() {
       i++
     }
   }
-  
-  //Update the copy 
+
+  //Update the copy
   for y := 0; y < rows; y++ {
     for x := 0; x < cols; x++ {
       g.board[y][x] = g.state[y][x]
