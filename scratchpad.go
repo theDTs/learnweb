@@ -95,7 +95,12 @@ func (g *Game) SeedRand() {
     }
   }
 
-  g.Update(g.board)
+  //Update the copy 
+  for y := 0; y < rows; y++ {
+    for x := 0; x < cols; x++ {
+      g.board[y][x] = g.state[y][x]
+    }
+  }
 
   return
 }
