@@ -9,17 +9,19 @@ func main() {
   //Clear the page
   doc.Get("body").Set("innerHTML", "")
   doc.Set("title", "Canvas Tests")
+  
+  var d display
+  
+  d.canvas = doc.Call("createElement", "canvas")
+  d.canvas.Set("height", "500")
+  d.canvas.Set("width", "500")
+  d.canvas.Set("id", "myCanvas")
+  doc.Get("body").Call("appendChild", d.canvas)
 
-  canvas := doc.Call("createElement", "canvas")
-  canvas.Set("height", "500")
-  canvas.Set("width", "500")
-  canvas.Set("id", "myCanvas")
-  doc.Get("body").Call("appendChild", canvas)
+  d.ctx = canvas.Call("getContext", "2d")
+  d.ctx.Set("fillStyle", "red")
 
-  ctx := canvas.Call("getContext", "2d")
-  ctx.Set("fillStyle", "red")
-
-  ctx.Call("fillRect", 0, 0, 50, 50)
+  d.ctx.Call("fillRect", 0, 0, 50, 50)
 
 }
 
@@ -28,8 +30,10 @@ type display struct {
   Board
   Game
   canvas  *js.Object
-  context *js.Object
+  ctx *js.Object
 }
+
+
 
 //Game describes a Game of Life "board", with a grid of cells that can be updated turn by turn
 type Game struct {
