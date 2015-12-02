@@ -96,18 +96,50 @@ func (g *Game) SeedRand() {
   }
 
   g.Update(g.board)
-  
+
   return
 }
 
 //SeedAcorn will clear the game board and place the "acorn", a long-lived "methuselah" pattern, in the center. Requires an initialized game with a board of at least 3 x 7
 func (g *Game) SeedAcorn() {
-	//Acorn pattern with rows end-to-end
-	acorn := []int	{	0,1,0,0,0,0,0,
-						0,0,0,1,0,0,0,
-						1,1,0,0,1,1,1,
-					}
-	
+  //Acorn pattern with rows end-to-end
+  acorn := []int{0, 1, 0, 0, 0, 0, 0,
+    0, 0, 0, 1, 0, 0, 0,
+    1, 1, 0, 0, 1, 1, 1,
+  }
+
+  //For performance in gopherjs
+  rows, cols := int(g.rows), int(g.cols)
+
+  //Clear the board
+  for y := 0; y < rows; y++ {
+    for x := 0; x < cols; x++ {
+      g.state[y][x].Alive = false
+    }
+  }
+
+  //Center the pattern on the board
+  startRow := (rows - 1) / 2
+  startCol := (cols - 1) / 2
+
+  //Copy acorn pattern onto center of board
+  for y, i := 0, 0; y < 3; y++ {
+    for x := 0; x < 7; x++ {
+      if acorn[i] == 1 {
+        g.state[startRow+y][startCol+x].Alive = true
+      }
+      i++
+    }
+  }
+  
+  //Update the copy 
+  for y := 0; y < rows; y++ {
+    for x := 0; x < cols; x++ {
+      g.board[y][x] = g.state[y][x]
+    }
+  }
+
+  return
 }
 
 //GetBoard returns a grid of the Game's current board for copying or displaying; the grid can also be updated by providing it to Game.Update() (avoiding excessive allocations)
