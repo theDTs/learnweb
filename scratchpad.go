@@ -17,16 +17,17 @@ func main() {
   d.height = d.rows * d.cellSize
   d.width = d.cols * d.cellSize
 
-  d.Game = NewGame(rows, cols)
+  d.Game = NewGame(uint(d.rows), uint(d.cols))
+  d.Game.SeedRand()
   d.Board = d.Game.GetBoard()
 
   d.canvas = doc.Call("createElement", "canvas")
-  d.canvas.Set("height", "500")
-  d.canvas.Set("width", "500")
+  d.canvas.Set("height", d.height)
+  d.canvas.Set("width", d.width)
   d.canvas.Set("id", "myCanvas")
   doc.Get("body").Call("appendChild", d.canvas)
 
-  d.ctx = canvas.Call("getContext", "2d")
+  d.ctx = d.canvas.Call("getContext", "2d")
   d.ctx.Set("fillStyle", "red")
 
   d.ctx.Call("fillRect", 0, 0, 50, 50)
@@ -36,7 +37,7 @@ func main() {
 type display struct {
   rows, cols, height, width, cellSize int
   Board
-  Game
+  *Game
   canvas *js.Object
   ctx    *js.Object
 }
@@ -106,8 +107,8 @@ func (g *Game) SeedRand() {
   }
 
   //Update the copy
-  for y := 0; y < rows; y++ {
-    for x := 0; x < cols; x++ {
+  for y := 0; y < int(g.rows); y++ {
+    for x := 0; x < int(g.cols); x++ {
       g.board[y][x] = g.state[y][x]
     }
   }
