@@ -18,7 +18,7 @@ func main() {
   d.width = d.cols * d.cellSize
 
   d.Game = NewGame(uint(d.rows), uint(d.cols))
-  d.Game.SeedRand()
+  d.Game.SeedAcorn()
   d.Board = d.Game.GetBoard()
 
   d.canvas = doc.Call("createElement", "canvas")
