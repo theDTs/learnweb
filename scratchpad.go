@@ -42,6 +42,10 @@ type display struct {
   ctx    *js.Object
 }
 
+func (d *display) Draw() {
+  return
+}
+
 //Game describes a Game of Life "board", with a grid of cells that can be updated turn by turn
 type Game struct {
   state, prevState, board Board
@@ -68,6 +72,16 @@ func NewGame(rows, cols uint) *Game {
   g.board = makeBoard(rows, cols)
 
   return &g
+}
+
+//Rows
+func (g *Game) Rows() int {
+	return int(g.rows)
+}
+
+//Cols
+func (g *Game) Cols() int {
+	return int(g.cols)
 }
 
 func makeBoard(rows, cols uint) Board {
