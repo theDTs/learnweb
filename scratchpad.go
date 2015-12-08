@@ -28,9 +28,7 @@ func main() {
   doc.Get("body").Call("appendChild", d.canvas)
 
   d.ctx = d.canvas.Call("getContext", "2d")
-  d.ctx.Set("fillStyle", "red")
-
-  d.ctx.Call("fillRect", 0, 0, 50, 50)
+  d.Draw()
 
 }
 
@@ -43,6 +41,29 @@ type display struct {
 }
 
 func (d *display) Draw() {
+  //Clear canvas
+  d.ctx.Set("fillStyle", "white")
+  d.ctx.Call("fillRect", 0, 0, d.width, d.height)
+  d.ctx.Set("fillStyle", "red")
+  
+  //Update copy of Game's state.
+  d.Game.Update(d.Board)
+  
+  //Draw living cells
+  rows, cols := d.Game.Rows(), d.Game.Cols()
+  for y := 0; y < rows; y++ {
+      for x := 0; x < cols; x++ {
+          if d.Board[y][x].Alive {
+              d.ctx.Call("fillRect",
+                       x*d.cellSize,    // fillRect uses "x, y" order
+                       y*d.cellSize,
+                       d.cellSize,
+                       d.cellSize)
+          }
+      }
+  }
+  
+	
   return
 }
 
@@ -74,12 +95,12 @@ func NewGame(rows, cols uint) *Game {
   return &g
 }
 
-//Rows
+//Rows gets the number of rows
 func (g *Game) Rows() int {
 	return int(g.rows)
 }
 
-//Cols
+//Cols gets the number of columns
 func (g *Game) Cols() int {
 	return int(g.cols)
 }
