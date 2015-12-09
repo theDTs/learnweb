@@ -29,6 +29,7 @@ func main() {
 
 	d.ctx = d.canvas.Call("getContext", "2d")
 	d.Draw()
+	js.Global.Call("setInterval", func(){d.DrawNext()}, 500)
 
 }
 
@@ -63,6 +64,12 @@ func (d *display) Draw() {
 		}
 	}
 
+	return
+}
+
+func (d *display) DrawNext() {
+	d.Game.Step()
+	d.Draw()
 	return
 }
 
