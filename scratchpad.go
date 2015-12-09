@@ -204,7 +204,7 @@ func (g *Game) SeedRand() {
 	//Update the copy
 	for y := 0; y < int(g.rows); y++ {
 		for x := 0; x < int(g.cols); x++ {
-			g.board[y][x] = g.state[y][x]
+			g.board[y][x] = g.state[y+1][x+1]
 		}
 	}
 
@@ -246,7 +246,7 @@ func (g *Game) SeedAcorn() {
 	//Update the copy
 	for y := 0; y < rows; y++ {
 		for x := 0; x < cols; x++ {
-			g.board[y][x] = g.state[y][x]
+			g.board[y][x] = g.state[y+1][x+1]
 		}
 	}
 
