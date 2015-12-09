@@ -66,17 +66,6 @@ func (d *display) Draw() {
 	return
 }
 
-var offset = [8]struct{ y, x int }{
-	{-1, -1},
-	{0, -1},
-	{1, -1},
-	{-1, 1},
-	{0, 1},
-	{1, 1},
-	{-1, 0},
-	{1, 0},
-}
-
 //Game describes a Game of Life "board", with a grid of cells that can be updated turn by turn
 type Game struct {
 	state, prevState, board Board
@@ -115,7 +104,66 @@ func (g *Game) Cols() int {
 	return int(g.cols)
 }
 
+var offset = [8]struct{ y, x int }{
+	{-1, -1},
+	{0, -1},
+	{1, -1},
+	{-1, 1},
+	{0, 1},
+	{1, 1},
+	{-1, 0},
+	{1, 0},
+}
+
 //Step calculates which are alive and dead to advance the simulation one generation.
+func (g *Game) Step() {
+
+	rows, cols := int(g.rows), int(g.cols)
+	var neighbors int
+
+	//Swapping the boards allows us to overwrite the state from two turns ago, while reading the state from last turn
+	g.state, g.prevState = g.prevState, g.state
+
+	//Iterate over every row, skipping the border rows
+	for y := 1; y <= rows; y++ {
+		//Cell by cell, skipping borders
+		for x := 1; x <= cols; x++ {
+
+			// Count the neighbors
+			neighbors = 0
+			for i := 0; i < 8; i++ {
+				if g.prevState[offset[i].y+y][offset[i].x+x].Alive {
+					neighbors++
+				}
+			}
+
+			/*Implement game of life ruleset:
+			  With exactly 2 neighbors: Alive cell stays alive and dead cell stays dead
+			  With exactly 3 neighbors: Alive cell stays alive and dead cell also lives
+			  Any other number of neighbors: Alive cell dies and dead cell stays dead
+			*/
+			if neighbors == 2 {
+				g.state[y][x] = g.prevState[y][x]
+			} else if neighbors == 3 {
+				g.state[y][x].Alive = true
+			} else {
+				g.state[y][x].Alive = false
+			}
+
+		}
+	}
+
+	//Update the copy
+	for y := 0; y < int(g.rows); y++ {
+		for x := 0; x < int(g.cols); x++ {
+			//+1 to avoid copying the border cells
+			g.board[y][x] = g.state[y+1][x+1]
+		}
+	}
+
+	return
+
+}
 
 func makeBoard(rows, cols uint) Board {
 
